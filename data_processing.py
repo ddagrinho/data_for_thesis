@@ -33,15 +33,32 @@ def voltage_curve_experiment(nr_cycle,path,theoretical_capacity):
     df1=df1.loc[df1['voltage_V'] <= 3.45]
     #df1.set_index('channel_index', inplace=True)
     st=0
-    
+    ind=0
+    start=0
+    # Find the position of 'Charlie' in the DataFrame
+    value = 'discharge CC'  # Value to search for
+
+    # Get the row label
+    row_label = df1.index[df1['step_name'] == value].tolist()[0]
+    row_index = df1.index.get_loc(row_label)
+    start=row_index
+    st=row_index
     while (df1['step_name'].iloc[st] != 'rest'):
-        st+=1
+                st+=1
 
     end=st
+    # for i in range (0,len(df1)):
+    #     if (df1['step_name'].iloc[i] == 'discharge CC') and start==0:
+    #         start=i
+    #         st=i
+    #         while (df1['step_name'].iloc[row_index] != 'rest'):
+    #             st+=1
+
+    #         end=st
 
 
-    x=df1['discharge_capacity_Ah'].iloc[0:end]
-    y=df1['voltage_V'].iloc[0:end]
+    x=df1['discharge_capacity_Ah'].iloc[start:end]
+    y=df1['voltage_V'].iloc[start:end]
     avg_cap=0
     avg_vol=0
     l=0
@@ -74,8 +91,8 @@ def voltage_curve_experiment(nr_cycle,path,theoretical_capacity):
 
 cap, voltage=voltage_curve_experiment('5','C:/Users/dhmht/Desktop/Thesis_files/experiments/data_1st_exp_nogf_1c/DMT_77_EXC.xlsx',0.0025)
 cap2, voltage2=voltage_curve_experiment('6','C:/Users/dhmht/Desktop/Thesis_files/experiments/data_1st_exp_nogf_1c/DMT_77_EXC.xlsx',0.0025)
-#cap3 , voltage3 = voltage_curve_experiment(5,'C:/Users/dhmht/Desktop/Thesis_files/experiments/DATA_ECDMC_NOGF_10DEGC_2MAH/DMTP_NOGF_cycle5and6_ex.xlsx',0.0025)
-
+cap3 , voltage3 = voltage_curve_experiment(5,'C:/Users/dhmht/Desktop/Thesis_files/experiments/DATA_ECDMC_NOGF_10DEGC_2MAH/DMTP_NOGF_cycle5and6_ex.xlsx',0.0025)
+c_rate = input("Write the C-rate: ")
 # x2=df1['discharge_capacity_Ah'].iloc[2300:2978]
 # y2=df1['voltage_V'].iloc[2300:2978]
 
@@ -116,15 +133,20 @@ cap2, voltage2=voltage_curve_experiment('6','C:/Users/dhmht/Desktop/Thesis_files
 #plt.scatter(x2, y2, label='Data2',color='green')
 
 #plt.plot(x_new, y_new, label='Spline fit')
-plt.plot(cap,voltage,label='Spline fit',color='red')
+plt.plot(cap,voltage,label='Spline fit',color='green')
 plt.plot(cap2,voltage2,label='Spline fit',color='blue')
-#plt.plot(cap3,voltage3,label='Spline fit',color='blue')
+plt.plot(cap3,voltage3,label='Spline fit',color='red')
 plt.legend()
+
+
+# Add a title with variable value
+plt.title(f'C-rate: {c_rate} C')
 plt.show()
 
 #plt.plot(df1['Column9'].iloc[63:740], df1['Column8'].iloc[63:740])
 plt.show()
 print(voltage3,cap3)
+
 
 
 
